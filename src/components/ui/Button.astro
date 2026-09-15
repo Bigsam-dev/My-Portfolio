@@ -1,0 +1,11 @@
+---
+interface Props { href: string; variant?: 'primary' | 'secondary' | 'text'; class?: string; ariaLabel?: string; }
+const { href, variant = 'primary', class: className = '', ariaLabel } = Astro.props;
+---
+<a href={href} class:list={['button', `button--${variant}`, className]} aria-label={ariaLabel}><span><slot /></span><span class="arrow" aria-hidden="true">→</span></a>
+<style>
+  .button{display:inline-flex;min-height:48px;align-items:center;justify-content:center;gap:.65rem;border:1px solid transparent;border-radius:10px;padding:.75rem 1.35rem;font-weight:600;line-height:1.2;transition:background-color .2s,border-color .2s}
+  .button--primary{background:var(--button-primary-bg,var(--blue));color:var(--button-primary-text,#fff)}.button--primary:hover{background:var(--button-primary-hover,var(--blue-strong))}
+  .button--secondary{border-color:var(--button-secondary-border,var(--dark-border));background:var(--button-secondary-bg,var(--navy-900));color:var(--button-secondary-text,inherit)}.button--secondary:hover{background:var(--button-secondary-hover,var(--navy-800));border-color:var(--button-secondary-hover-border,color-mix(in srgb,var(--blue) 42%,var(--dark-border)))}
+  .button--text{min-height:44px;padding-inline:0}.arrow{transition:transform .2s}.button:hover .arrow{transform:translateX(4px)}.button:active{transform:translateY(1px)}
+</style>

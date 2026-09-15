@@ -1,0 +1,42 @@
+---
+import type { CMSProject } from '../../lib/sanity/types';
+import ProjectPreview from '../home/ProjectPreview.astro';
+
+interface Props { project: CMSProject; featured?: boolean; headingLevel?: 'h2' | 'h3'; }
+const { project, featured = false, headingLevel = 'h3' } = Astro.props;
+const Heading = headingLevel;
+const { title, slug, category, summary, tech, status, visualType, visibility, coverUrl, coverSrcset } = project;
+const statusLabels = { delivered: 'Delivered', 'in-progress': 'In Progress', ongoing: 'Ongoing', architecture: 'System Architecture', concept: 'Concept' };
+const hasCaseStudy=visibility==='case-study';
+const visualLabel=coverUrl?'Project visual':'System architecture preview';
+---
+<article class:list={['project-card', { 'project-card--featured': featured }]}>
+  {hasCaseStudy?<a class="project-visual-link" href={`/work/${slug}/`} aria-label={`View ${title} case study`} tabindex="-1">{coverUrl?<img src={coverUrl} srcset={coverSrcset} sizes="(max-width: 767px) calc(100vw - 40px), 50vw" alt={`${title} project visual`} loading="lazy" decoding="async" width="1600" height="900"/>:<ProjectPreview type={visualType}/>}<span class="visual-label">{visualLabel} · {category}</span></a>:<div class="project-visual-link" aria-hidden="true">{coverUrl?<img src={coverUrl} srcset={coverSrcset} sizes="(max-width: 767px) calc(100vw - 40px), 50vw" alt="" loading="lazy" decoding="async" width="1600" height="900"/>:<ProjectPreview type={visualType}/>}<span class="visual-label">{visualLabel} · {category}</span></div>}
+  <div class="project-card-content">
+    <div class="project-kicker"><span>{category}</span>{status && <span class="project-status">{statusLabels[status]}</span>}</div>
+    <Heading>{hasCaseStudy?<a href={`/work/${slug}/`}>{title}</a>:title}</Heading>
+    <p>{summary}</p>
+    <ul aria-label={`${title} technology`}>
+      {tech.map((item) => <li>{item}</li>)}
+    </ul>
+    {hasCaseStudy?<a class="project-link" href={`/work/${slug}/`} aria-label={`View ${title} case study`}>View Case Study <span aria-hidden="true">→</span></a>:<span class="card-only">Project Overview</span>}
+  </div>
+</article>
+
+<style>
+  .project-card{min-width:0;overflow:hidden;border:1px solid var(--dark-border);border-radius:var(--radius-lg);background:var(--navy-800)}
+  .project-visual-link{position:relative;display:block}.project-visual-link:focus-visible{outline-offset:-4px}.project-visual-link :global(.project-preview){min-height:260px;border:0;border-bottom:1px solid var(--dark-border);border-radius:0}.project-visual-link>img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-bottom:1px solid var(--dark-border)}.visual-label{position:absolute;right:.75rem;bottom:.75rem;padding:.45rem .6rem;border:1px solid var(--dark-border);border-radius:999px;background:color-mix(in srgb,var(--navy-950) 88%,transparent);color:var(--text-light-secondary);font-size:.62rem;font-weight:650;letter-spacing:.07em;text-transform:uppercase;backdrop-filter:blur(8px)}
+  .project-card-content{padding:clamp(1.5rem,4vw,2.5rem)}.project-kicker{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.6rem;color:var(--blue-hover);font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}.project-status{color:var(--text-light-secondary)}
+  h2,h3{margin:.8rem 0 0;font-size:clamp(1.6rem,5vw,2.35rem);font-weight:500;letter-spacing:-.035em;line-height:1.05}h2 a,h3 a{display:inline-flex;min-height:44px;align-items:center}
+  p{max-width:44rem;margin:1rem 0 0;color:var(--text-light-secondary);font-size:1rem}
+  ul{display:flex;flex-wrap:wrap;gap:.45rem;margin:1.35rem 0 0;padding:0;list-style:none}li{padding:.35rem .6rem;border:1px solid var(--dark-border);border-radius:999px;color:var(--text-light-secondary);font-size:.7rem}
+  .project-link,.card-only{display:inline-flex;align-items:center;gap:.5rem;min-height:44px;margin-top:1.35rem;font-size:.82rem;font-weight:650}.card-only{color:var(--text-light-secondary)}.project-link span{transition:transform .2s}.project-link:hover span,.project-link:focus-visible span{transform:translateX(4px)}
+  @media(min-width:900px){.project-card--featured{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1.55fr) minmax(280px,.75fr)}.project-card--featured .project-visual-link :global(.project-preview){height:100%;min-height:470px;border-right:1px solid var(--dark-border);border-bottom:0}}
+</style>
+<style>
+  .project-card{border-color:var(--light-border);background:var(--pure-white);color:var(--text-dark)}
+  .project-kicker{color:var(--blue)}.project-status{color:var(--text-dark-secondary)}
+  p{color:var(--text-dark-secondary)}
+  li{border-color:var(--light-border);background:var(--cool-white);color:var(--text-dark-secondary)}
+  .project-link{color:var(--blue-strong)}.card-only{color:var(--text-dark-secondary)}
+</style>

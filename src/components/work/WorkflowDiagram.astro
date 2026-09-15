@@ -1,0 +1,19 @@
+---
+interface Props { title?: string; steps: string[]; description?: string; }
+const { title = 'Project workflow', steps, description = 'A static system architecture showing the project workflow from its first layer to its final layer.' } = Astro.props;
+const titleId = `workflow-${steps.join('-').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`;
+const nodes = steps.map((step: string, index: number) => ({ step, index, x: 100 + (index * (800 / Math.max(steps.length - 1, 1))) }));
+---
+<div class="workflow-diagram">
+  <svg viewBox="0 0 1000 250" role="img" aria-labelledby={`${titleId}-title ${titleId}-desc`}>
+    <title id={`${titleId}-title`}>{title}</title><desc id={`${titleId}-desc`}>{description} {steps.join(' to ')}.</desc>
+    <line x1="100" y1="125" x2="900" y2="125" class="flow-line"/>
+    {nodes.map(({step,index,x}) => <g><circle cx={x} cy="125" r="42"/><text x={x} y="120" text-anchor="middle"><tspan x={x}>{String(index + 1).padStart(2,'0')}</tspan><tspan x={x} dy="21">{step}</tspan></text></g>)}
+  </svg>
+  <ol aria-label={title}>{nodes.map(({step,index})=><li><span>{String(index+1).padStart(2,'0')}</span><strong>{step}</strong></li>)}</ol>
+</div>
+<style>
+  .workflow-diagram{overflow:hidden;border:1px solid var(--dark-border);border-radius:var(--radius-lg);background:var(--navy-900)}svg{display:none;width:100%;height:auto;padding:clamp(1.5rem,4vw,3rem)}.flow-line{stroke:var(--blue);stroke-width:2;stroke-dasharray:5 8}circle{fill:var(--navy-800);stroke:var(--blue);stroke-width:2}text{fill:var(--text-light-secondary);font-family:var(--font-sans);font-size:12px}text tspan:first-child{fill:var(--blue-hover);font-size:9px;font-weight:700}
+  ol{display:grid;margin:0;padding:1rem;list-style:none}li{position:relative;display:grid;grid-template-columns:36px minmax(0,1fr);gap:.75rem;align-items:center;min-height:68px;padding:.75rem;border-bottom:1px solid var(--dark-border)}li:last-child{border-bottom:0}li:not(:last-child)::after{position:absolute;bottom:-9px;left:25px;z-index:1;color:var(--blue);content:'↓'}li span{color:var(--blue-hover);font-size:.68rem}li strong{font-size:1rem;font-weight:500}
+  @media(min-width:768px){svg{display:block}ol{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}}
+</style>

@@ -1,0 +1,21 @@
+---
+import { getPublicProjects } from '../../lib/sanity/content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/layout/Container.astro';
+import Eyebrow from '../../components/ui/Eyebrow.astro';
+import ProjectCard from '../../components/work/ProjectCard.astro';
+const projects = await getPublicProjects();
+---
+<BaseLayout title="Work — Systems Built Around Real Business Problems | SAMDIGITALS" description="Explore CRM, automation, analytics, website, and operational systems designed around the way businesses actually work.">
+  <section class="work-hero"><Container><Eyebrow>SELECTED WORK</Eyebrow><h1>Systems built around<br/>real business problems.</h1><p>A collection of automation, CRM, analytics, website, and operational systems designed around the way businesses actually work.</p></Container></section>
+  <section class="work-section" aria-label="Project case studies"><Container><div class="work-grid">{projects.map((project,index)=><ProjectCard project={project} featured={index===0} headingLevel="h2"/>)}</div></Container></section>
+</BaseLayout>
+<style>
+  .work-hero{padding-block:clamp(8rem,14vw,12rem) clamp(5rem,9vw,8rem);border-bottom:1px solid var(--dark-border);background:var(--navy-950)}h1{max-width:13ch;margin:0;font-size:clamp(2.75rem,7vw,6.4rem);font-weight:500;letter-spacing:-.055em;line-height:.91}p{max-width:44rem;margin:1.75rem 0 0;color:var(--text-light-secondary);font-size:clamp(1rem,1.5vw,1.2rem)}.work-section{padding-block:var(--section-space);background:var(--navy-900)}.work-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:1.25rem}
+  @media(min-width:768px){.work-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media(max-width:767px){.work-hero{padding-block:8rem 5rem}h1{font-size:clamp(2.625rem,12vw,3.4rem)}p{font-size:1rem}}
+</style>
+<style>
+  .work-hero{background:linear-gradient(135deg,var(--royal-blue-dark),var(--royal-blue));border-bottom-color:rgba(255,255,255,.22)}
+  .work-section{background:var(--cool-white);color:var(--text-dark)}
+</style>

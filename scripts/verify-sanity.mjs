@@ -1,0 +1,4 @@
+import {createClient} from '@sanity/client';
+const client=createClient({projectId:'flpzrgcs',dataset:'production',apiVersion:'2026-08-31',useCdn:false,perspective:'published'});
+const result=await client.fetch(`{"projectId":sanity::projectId(),"dataset":sanity::dataset(),"projects":count(*[_type=="project"]),"technologies":count(*[_type=="technology"]),"insights":count(*[_type=="insight"]),"publishedInsights":count(*[_type=="insight"&&status=="published"]),"phase7Assets":count(*[_type=="sanity.imageAsset"&&originalFilename in ["sam-workspace-portrait.png","sam-formal-standing.jpg","sam-headshot.jpg","zoho-custom-function.png"]]),"siteMedia":*[_id=="site-media"][0]{"portrait":portrait.asset->originalFilename,"workingPhoto":workingPhoto.asset->originalFilename,"secondaryPhoto":secondaryPhoto.asset->originalFilename,"proof":representativeProof[]{title,altText,caption,displayStyle,"asset":image.asset->originalFilename}}}`);
+console.log(JSON.stringify(result));

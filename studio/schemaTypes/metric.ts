@@ -1,0 +1,2 @@
+import {defineField,defineType} from 'sanity';
+export default defineType({name:'metric',title:'Metric',type:'object',description:'Only enter measurable results that can be verified. Leave empty when unavailable.',fields:[defineField({name:'label',type:'string',validation:(Rule)=>Rule.required()}),defineField({name:'value',type:'string',validation:(Rule)=>Rule.required()}),defineField({name:'context',type:'string'}),defineField({name:'verified',type:'boolean',initialValue:false,description:'Only verified metrics are rendered publicly.'})]});

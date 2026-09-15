@@ -1,0 +1,43 @@
+---
+const platforms = [
+  { name: 'Zoho', src: '/logos/zoho.svg', width: 90 },
+  { name: 'GoHighLevel', src: '/logos/gohighlevel.svg', width: 142 },
+  { name: 'Make', src: '/logos/make.svg', width: 82 },
+  { name: 'n8n', src: '/logos/n8n.svg', width: 72 },
+  { name: 'Zapier', src: '/logos/zapier.svg', width: 94 },
+  { name: 'Shopify', src: '/logos/shopify.svg', width: 106 },
+  { name: 'Clio', src: '/logos/clio.svg', width: 66 },
+  { name: 'JobTread', src: '/logos/jobtread.svg', width: 150 },
+  { name: 'Brevo', src: '/logos/brevo.svg', width: 28, label: 'Brevo' },
+];
+---
+<div class="software-marquee" role="group" aria-label="Platforms I work with">
+  <p>Built across</p>
+  <div class="marquee-window">
+    <div class="marquee-track">
+      <ul class="logo-set">
+        {platforms.map(({name,src,width,label})=><li><img src={src} alt={name} width={width} height="28" loading="eager" decoding="async"/>{label&&<span aria-hidden="true">{label}</span>}</li>)}
+      </ul>
+      <ul class="logo-set" aria-hidden="true">
+        {platforms.map(({src,width,label})=><li><img src={src} alt="" width={width} height="28" loading="eager" decoding="async"/>{label&&<span>{label}</span>}</li>)}
+      </ul>
+    </div>
+  </div>
+  <span class="capabilities">CRM · Automation · Commerce · APIs · Integrations</span>
+</div>
+
+<style>
+.software-marquee{min-width:0;margin-top:clamp(2rem,4vw,3rem);padding-top:1rem;border-top:1px solid var(--dark-border)}
+.software-marquee>p{margin:0 0 .75rem;color:var(--text-light-secondary);font-size:.72rem;font-weight:650;letter-spacing:.08em;text-transform:uppercase}
+.marquee-window{width:100%;min-width:0;overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+.marquee-track{display:flex;width:max-content;will-change:transform;animation:logo-marquee 40s linear infinite}
+.logo-set{display:flex;flex:0 0 auto;align-items:center;gap:clamp(1.75rem,3vw,3rem);margin:0;padding:0 clamp(1.75rem,3vw,3rem) 0 0;list-style:none}
+.logo-set li{display:flex;flex:0 0 auto;height:30px;align-items:center;gap:.45rem;opacity:.72;transition:opacity .2s,filter .2s}.logo-set li span{color:var(--text-light);font-size:1rem;font-weight:700;letter-spacing:-.03em}
+.logo-set img{display:block;width:auto;max-width:142px;height:clamp(22px,2vw,28px)}
+.logo-set img{filter:brightness(0) invert(1)}
+.capabilities{display:block;margin-top:.7rem;color:var(--text-muted);font-size:.65rem;letter-spacing:.05em}
+@keyframes logo-marquee{to{transform:translateX(-50%)}}
+@media(hover:hover) and (pointer:fine){.marquee-window:hover .marquee-track{animation-play-state:paused}.logo-set li:hover{opacity:1;filter:drop-shadow(0 0 8px color-mix(in srgb,var(--blue-hover) 25%,transparent))}}
+@media(max-width:480px){.marquee-track{animation-duration:35s}.logo-set{gap:1.4rem;padding-right:1.4rem}.logo-set img{height:22px;max-width:124px}.capabilities{line-height:1.5}}
+@media(prefers-reduced-motion:reduce){.marquee-window{mask-image:none;-webkit-mask-image:none;overflow:visible}.marquee-track{width:100%;animation:none}.logo-set{width:100%;flex-wrap:wrap;gap:1rem 1.5rem;padding:0}.logo-set[aria-hidden=true]{display:none}.logo-set li{opacity:.8}.logo-set img{height:24px}}
+</style>

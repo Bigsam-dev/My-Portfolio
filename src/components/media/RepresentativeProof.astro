@@ -1,0 +1,15 @@
+---
+import type {ProjectScreenshot} from '../../lib/sanity/types';
+interface Props {items?:ProjectScreenshot[];compact?:boolean}
+const {items=[],compact=false}=Astro.props;
+---
+{items.length>0&&<div class:list={['representative-proof',{'representative-proof--compact':compact}]}>
+  {items.map(item=><figure class:list={['proof-screen',`proof-screen--${item.displayStyle}`]}>
+    <div class="proof-frame"><img src={item.url} srcset={item.srcset} sizes="(max-width: 767px) calc(100vw - 40px), 80vw" alt={item.altText} width="1600" height="1000" loading="lazy" decoding="async"/></div>
+    <figcaption><strong>{item.title}</strong>{item.caption&&<p>{item.caption}</p>}<span>Representative CRM / automation sample — not attributed to a named client project.</span></figcaption>
+  </figure>)}
+</div>}
+<style>
+.representative-proof{display:grid;grid-template-columns:minmax(0,1fr);gap:1.25rem}.proof-screen{min-width:0;margin:0}.proof-frame{position:relative;overflow:hidden;border:1px solid var(--light-border);border-radius:var(--radius-md);background:var(--navy-950);box-shadow:0 18px 45px rgba(6,15,27,.12)}.proof-frame::before{display:block;height:24px;border-bottom:1px solid var(--dark-border);background:var(--navy-800);content:''}.proof-frame img{display:block;width:100%;height:auto;max-height:620px;object-fit:contain;background:#101214}.proof-screen--detail-crop .proof-frame img{aspect-ratio:16/9;object-fit:cover;object-position:center 22%}figcaption{display:grid;gap:.35rem;padding-top:1rem;color:var(--text-dark-secondary)}figcaption strong{color:var(--text-dark);font-size:1rem;font-weight:600}figcaption p{max-width:52rem;margin:0;font-size:.9rem}figcaption span{font-size:.68rem;font-weight:650;letter-spacing:.06em;text-transform:uppercase}.representative-proof--compact .proof-frame img{max-height:440px}
+@media(max-width:767px){.proof-frame::before{height:18px}.proof-frame img{max-height:360px}figcaption{padding-top:.8rem}figcaption p{font-size:.82rem}figcaption span{font-size:.62rem;line-height:1.5}}
+</style>

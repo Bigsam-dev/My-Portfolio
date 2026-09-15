@@ -1,0 +1,9 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/layout/Container.astro';
+import Button from '../components/ui/Button.astro';
+---
+<BaseLayout title="Page Not Found | SAMDIGITALS" description="The requested SAMDIGITALS page could not be found." robots="noindex, follow">
+  <section class="not-found"><Container><p>404</p><h1>This route isn't part of the system.</h1><div class="actions"><Button href="/">Back Home</Button><Button href="/work/" variant="secondary">View Work</Button><Button href="/contact/" variant="secondary">Start a Project</Button></div></Container></section>
+</BaseLayout>
+<style>.not-found{min-height:100svh;display:grid;place-items:center;padding-block:8rem;background:var(--navy-950)}.not-found p{margin:0;color:var(--blue-hover);font-size:.75rem;font-weight:700;letter-spacing:.14em}.not-found h1{max-width:12ch;margin:.75rem 0 0;font-size:clamp(2.75rem,8vw,6.5rem);font-weight:500;letter-spacing:-.055em;line-height:.94}.actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:2.5rem}@media(max-width:600px){.actions{display:grid}.actions :global(a){width:100%}}</style>

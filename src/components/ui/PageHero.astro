@@ -1,0 +1,15 @@
+---
+import Container from '../layout/Container.astro';
+import Eyebrow from './Eyebrow.astro';
+interface Props { eyebrow:string; title:string; description:string; split?:boolean; }
+const {eyebrow,title,description,split=false}=Astro.props;
+---
+<header class:list={['page-hero',{split}]}><Container><div class="hero-copy"><Eyebrow>{eyebrow}</Eyebrow><h1>{title}</h1><p>{description}</p><slot name="actions"/></div>{split&&<div class="hero-visual"><slot name="visual"/></div>}</Container></header>
+<style>
+  .page-hero{padding-block:clamp(8rem,14vw,12rem) clamp(5rem,9vw,8rem);border-bottom:1px solid var(--dark-border);background:var(--navy-950)}.page-hero :global(.container){display:grid;grid-template-columns:minmax(0,1fr);gap:3rem;align-items:center}.hero-copy{min-width:0}h1{max-width:13ch;margin:0;font-size:clamp(2.75rem,7vw,6.4rem);font-weight:500;letter-spacing:-.055em;line-height:.92;white-space:pre-line;overflow-wrap:break-word}p{max-width:44rem;margin:1.6rem 0 0;color:var(--text-light-secondary);font-size:clamp(1rem,1.5vw,1.2rem)}
+  @media(min-width:900px){.page-hero.split :global(.container){grid-template-columns:minmax(0,7fr) minmax(300px,5fr);gap:clamp(3rem,7vw,7rem)}}
+  @media(max-width:767px){.page-hero{padding-block:8rem 5rem}h1{max-width:none;font-size:clamp(2.625rem,12vw,3.5rem)}p{font-size:1rem}}
+</style>
+<style>
+  .page-hero{--button-primary-bg:var(--pure-white);--button-primary-text:var(--royal-blue-dark);--button-primary-hover:var(--soft-blue);--button-secondary-bg:transparent;--button-secondary-text:var(--pure-white);--button-secondary-border:rgba(255,255,255,.55);--button-secondary-hover:rgba(255,255,255,.1);border-bottom-color:rgba(255,255,255,.22);background:linear-gradient(135deg,var(--royal-blue-dark),var(--royal-blue))}
+</style>

@@ -1,0 +1,10 @@
+---
+import Eyebrow from './Eyebrow.astro';
+interface Props { eyebrow?: string; title: string; description?: string; light?: boolean; id?: string; }
+const { eyebrow, title, description, light = false, id } = Astro.props;
+---
+<div class:list={['section-heading',{light}]}>{eyebrow&&<Eyebrow>{eyebrow}</Eyebrow>}<h2 id={id}>{title}</h2>{description&&<p>{description}</p>}</div>
+<style>
+  .section-heading{width:100%;max-width:52rem;min-width:0}h2{width:100%;max-width:18ch;margin:0;font-size:clamp(2.15rem,5vw,4rem);font-weight:500;letter-spacing:-.04em;line-height:1;overflow-wrap:break-word}p{width:100%;max-width:42rem;margin:1.4rem 0 0;color:var(--text-secondary);font-size:clamp(1rem,1.4vw,1.2rem)}.light p{color:var(--text-dark-secondary)}
+  @media(max-width:767px){.section-heading,h2,p{max-width:none}h2{font-size:clamp(2.125rem,9.5vw,2.625rem)}p{font-size:1rem}}
+</style>

@@ -1,0 +1,14 @@
+---
+import Container from '../layout/Container.astro';import Button from './Button.astro';import Eyebrow from './Eyebrow.astro';
+interface Props{eyebrow?:string;title:string;description?:string;primaryLabel?:string;primaryHref?:string;secondaryLabel?:string;secondaryHref?:string}
+const {eyebrow='START A CONVERSATION',title,description,primaryLabel='Start a Project',primaryHref='/contact/',secondaryLabel,secondaryHref='/work/'}=Astro.props;
+---
+<section class="final-cta" aria-label="Next step"><Container><div><Eyebrow>{eyebrow}</Eyebrow><h2>{title}</h2></div><div class="cta-side">{description&&<p>{description}</p>}<div class="cta-actions"><Button href={primaryHref}>{primaryLabel}</Button>{secondaryLabel&&<Button href={secondaryHref} variant="secondary">{secondaryLabel}</Button>}</div></div></Container></section>
+<style>
+  .final-cta{padding-block:clamp(5rem,10vw,9rem);border-top:1px solid var(--dark-border);background:var(--navy-950)}.final-cta :global(.container){display:grid;grid-template-columns:minmax(0,1fr);gap:2.5rem}.final-cta h2{max-width:15ch;margin:0;font-size:clamp(2.6rem,5.5vw,5.2rem);font-weight:500;letter-spacing:-.052em;line-height:.94}.cta-side p{max-width:36rem;margin:0;color:var(--text-light-secondary);font-size:1rem}.cta-actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.75rem}
+  @media(min-width:900px){.final-cta :global(.container){grid-template-columns:7fr 5fr;gap:clamp(3rem,8vw,8rem);align-items:end}}
+  @media(max-width:767px){.final-cta h2{font-size:clamp(2.5rem,11vw,3.5rem)}.cta-actions{display:grid}.cta-actions :global(a){width:100%}}
+</style>
+<style>
+  .final-cta{--button-primary-bg:var(--pure-white);--button-primary-text:var(--royal-blue-dark);--button-primary-hover:var(--soft-blue);--button-secondary-bg:transparent;--button-secondary-text:var(--pure-white);--button-secondary-border:rgba(255,255,255,.55);--button-secondary-hover:rgba(255,255,255,.1);border-top-color:rgba(255,255,255,.22);background:var(--royal-blue)}
+</style>

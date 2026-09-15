@@ -1,0 +1,5 @@
+{
+  "name":"SAMDIGITALS","short_name":"SAMDIGITALS","description":"AI Automation, CRM and Web Systems",
+  "icons":[{"src":"/favicon-32.png","sizes":"32x32","type":"image/png"},{"src":"/apple-touch-icon.png","sizes":"180x180","type":"image/png"}],
+  "theme_color":"#071426","background_color":"#071426","display":"browser"
+}

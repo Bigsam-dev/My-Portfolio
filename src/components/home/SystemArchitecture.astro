@@ -1,0 +1,83 @@
+---
+const systems = {
+  marketing: { label:'Marketing', short:'Qualified attention and attribution', description:'Bring qualified attention into the system and preserve attribution data.', connections:['website','crm','analytics'], examples:['Google Ads','Meta','Organic','Campaign Tracking'], x:12, y:50, mobile:'marketing' },
+  website: { label:'Website', short:'Structured customer action', description:'Turn traffic into structured actions such as inquiries, applications, bookings, purchases, or account activity.', connections:['marketing','crm','automation','revenue'], examples:['Landing Pages','Forms','Portals','E-commerce','Web Apps'], x:32, y:50, mobile:'website' },
+  crm: { label:'CRM', short:'The operating layer', description:'Create a reliable operating layer for leads, contacts, pipeline activity, follow-up, and customer data.', connections:['website','automation','database','analytics','revenue'], examples:['Zoho','GoHighLevel','HubSpot','Clio'], x:52, y:50, mobile:'crm' },
+  automation: { label:'Automation', short:'Information and action flow', description:'Move information and trigger actions between systems without unnecessary manual work.', connections:['crm','ai','database','website'], examples:['Make','n8n','Zapier','Custom APIs'], x:70, y:25, mobile:'automation' },
+  database: { label:'Database', short:'Consistent operational data', description:'Store and structure business data that should remain consistent across applications.', connections:['crm','automation','ai','analytics'], examples:['Operational Data','Normalized Records','API Data','Application State'], x:70, y:75, mobile:'database' },
+  ai: { label:'AI', short:'Intelligence within the workflow', description:'Add intelligence where reasoning, classification, extraction, conversation, or decision support improves a workflow.', connections:['automation','database','crm','analytics'], examples:['AI Agents','Classification','Extraction','Assistants','Decision Support'], x:88, y:18, mobile:'ai' },
+  analytics: { label:'Analytics', short:'Operational understanding', description:'Turn operational and marketing data into information that helps the business understand what is happening.', connections:['marketing','crm','database','revenue'], examples:['Zoho Analytics','Dashboards','Attribution','Reporting'], x:88, y:82, mobile:'analytics' },
+  revenue: { label:'Revenue', short:'Commercial outcomes', description:'Connect business activity back to measurable commercial outcomes.', connections:['crm','analytics','website'], examples:['Pipeline','Sales','Orders','Applications','Customer Value'], x:88, y:50, mobile:'revenue' },
+} as const;
+type SystemId = keyof typeof systems;
+const order = Object.keys(systems) as SystemId[];
+const edges: [SystemId,SystemId][] = [
+  ['marketing','website'],['marketing','crm'],['marketing','analytics'],['website','crm'],['website','automation'],['website','revenue'],
+  ['crm','automation'],['crm','database'],['crm','analytics'],['crm','revenue'],['automation','database'],['automation','ai'],
+  ['database','ai'],['database','analytics'],['crm','ai'],['ai','analytics'],['analytics','revenue'],
+];
+const initial: SystemId = 'crm';
+const points = Object.fromEntries(order.map(id=>[id,{x:systems[id].x*10,y:systems[id].y*5}])) as Record<SystemId,{x:number;y:number}>;
+---
+<figure class="system-architecture" data-system-architecture data-active={initial}>
+  <figcaption>A connected business architecture. Select any operational layer to explore its purpose and direct relationships.</figcaption>
+  <div class="architecture-shell">
+    <div class="diagram-column">
+      <div class="diagram-meta"><span>SYSTEM MAP / 08 LAYERS</span><span class="desktop-instruction">Select a system layer</span><span class="mobile-instruction">Tap a system layer to explore</span></div>
+      <div class="diagram-stage">
+        <svg viewBox="0 0 1000 500" aria-hidden="true" focusable="false">
+          <defs><marker id="architecture-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z"/></marker></defs>
+          <g class="architecture-grid"><path d="M0 125H1000M0 250H1000M0 375H1000M250 0V500M500 0V500M750 0V500"/></g>
+          <g class="architecture-paths">
+            {edges.map(([from,to])=>{const a=points[from],b=points[to];return <path data-from={from} data-to={to} d={`M${a.x} ${a.y} C${(a.x+b.x)/2} ${a.y}, ${(a.x+b.x)/2} ${b.y}, ${b.x} ${b.y}`} marker-end="url(#architecture-arrow)"/>})}
+          </g>
+          <g class="data-particles" aria-hidden="true">{edges.map(([from,to])=>{const a=points[from],b=points[to];return <circle data-from={from} data-to={to} r="3"><animateMotion dur="3.2s" repeatCount="indefinite" path={`M${a.x} ${a.y} C${(a.x+b.x)/2} ${a.y}, ${(a.x+b.x)/2} ${b.y}, ${b.x} ${b.y}`}/></circle>})}</g>
+        </svg>
+        <div class="node-layer">
+          {order.map((id,index)=>{const item=systems[id];return <button type="button" class:list={['system-node',`node-${item.mobile}`]} data-node={id} data-connections={item.connections.join(',')} data-description={item.description} data-examples={item.examples.join('|')} style={`--x:${item.x}%;--y:${item.y}%`} aria-pressed={id===initial?'true':'false'} aria-describedby={`system-description-${id}`}><span>{String(index+1).padStart(2,'0')}</span><strong>{item.label}</strong><small>{item.short}</small></button>})}
+        </div>
+      </div>
+    </div>
+    <aside class="architecture-panel" aria-labelledby="active-system-name">
+      <span class="panel-label">ACTIVE SYSTEM LAYER</span><p class="panel-index">03 / 08</p><h3 id="active-system-name">{systems[initial].label}</h3><p class="panel-description">{systems[initial].description}</p>
+      <div class="panel-group"><span>DIRECT CONNECTIONS</span><ul class="panel-connections">{systems[initial].connections.map(id=><li>{systems[id].label}</li>)}</ul></div>
+      <div class="panel-group"><span>POSSIBLE SYSTEMS</span><ul class="panel-examples">{systems[initial].examples.map(item=><li>{item}</li>)}</ul></div>
+    </aside>
+  </div>
+  <div class="sr-system-descriptions">{order.map(id=><p id={`system-description-${id}`}>{systems[id].description} Direct connections: {systems[id].connections.map(connection=>systems[connection].label).join(', ')}.</p>)}</div>
+</figure>
+
+<script>
+  const initializeArchitecture = (root: HTMLElement) => {
+    if (root.dataset.ready === 'true') return; root.dataset.ready = 'true';
+    const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-node]')];
+    const paths = [...root.querySelectorAll<SVGPathElement>('.architecture-paths path')];
+    const particles = [...root.querySelectorAll<SVGCircleElement>('.data-particles circle')];
+    const name = root.querySelector<HTMLElement>('#active-system-name'); const description = root.querySelector<HTMLElement>('.panel-description');
+    const index = root.querySelector<HTMLElement>('.panel-index'); const connectionList = root.querySelector<HTMLElement>('.panel-connections'); const exampleList = root.querySelector<HTMLElement>('.panel-examples');
+    const setActive = (button: HTMLButtonElement) => {
+      const id=button.dataset.node!; const connected=(button.dataset.connections||'').split(',').filter(Boolean); root.dataset.active=id;
+      buttons.forEach(item=>{const itemId=item.dataset.node!;item.setAttribute('aria-pressed',String(itemId===id));item.dataset.state=itemId===id?'active':connected.includes(itemId)?'connected':'muted'});
+      const isDirect=(element:SVGElement)=>element.dataset.from===id&&connected.includes(element.dataset.to||'')||element.dataset.to===id&&connected.includes(element.dataset.from||'');
+      paths.forEach(path=>path.dataset.state=isDirect(path)?'active':'muted');
+      particles.forEach(particle=>particle.dataset.state=isDirect(particle)?'active':'muted');
+      if(name)name.textContent=button.querySelector('strong')?.textContent||''; if(description)description.textContent=button.dataset.description||'';
+      if(index)index.textContent=`${String(buttons.indexOf(button)+1).padStart(2,'0')} / ${String(buttons.length).padStart(2,'0')}`;
+      if(connectionList)connectionList.innerHTML=connected.map(connection=>`<li>${buttons.find(item=>item.dataset.node===connection)?.querySelector('strong')?.textContent||connection}</li>`).join('');
+      if(exampleList)exampleList.innerHTML=(button.dataset.examples||'').split('|').filter(Boolean).map(example=>`<li>${example}</li>`).join('');
+    };
+    buttons.forEach(button=>{button.addEventListener('click',()=>setActive(button));button.addEventListener('pointerenter',event=>{if((event as PointerEvent).pointerType==='mouse')setActive(button)});button.addEventListener('focus',()=>setActive(button));});
+    setActive(buttons.find(button=>button.dataset.node===root.dataset.active)||buttons[0]);
+  };
+  document.querySelectorAll<HTMLElement>('[data-system-architecture]').forEach(initializeArchitecture);
+  document.addEventListener('astro:page-load',()=>document.querySelectorAll<HTMLElement>('[data-system-architecture]').forEach(initializeArchitecture));
+</script>
+
+<style>
+  .system-architecture{margin:0}.system-architecture>figcaption,.sr-system-descriptions{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}.architecture-shell{display:grid;grid-template-columns:minmax(0,1fr);overflow:hidden;border:1px solid var(--dark-border);border-radius:var(--radius-lg);background:var(--navy-900)}.diagram-column{min-width:0}.diagram-meta{display:flex;justify-content:space-between;gap:1rem;padding:1rem 1.25rem;border-bottom:1px solid var(--dark-border);color:var(--text-muted);font-size:.65rem;letter-spacing:.11em}.mobile-instruction{display:none}.diagram-stage{position:relative;min-height:690px;overflow:hidden;background-image:radial-gradient(circle at 50% 42%,color-mix(in srgb,var(--blue) 8%,transparent),transparent 48%)}.diagram-stage svg{position:absolute;inset:0;display:block;width:100%;height:100%}.architecture-grid path{fill:none;stroke:color-mix(in srgb,var(--text-light-secondary) 5%,transparent);stroke-width:1}.architecture-paths path{fill:none;stroke:color-mix(in srgb,var(--text-light-secondary) 24%,transparent);stroke-width:1.5;transition:stroke .3s,opacity .3s,stroke-width .3s}.architecture-paths path[data-state=active]{stroke:var(--blue);stroke-width:2.5}.architecture-paths path[data-state=muted]{opacity:.28}.data-particles circle{display:none;fill:var(--warm-accent)}.data-particles circle[data-state=active]{display:block}.node-layer{position:absolute;inset:0}.system-node{position:absolute;left:var(--x);top:var(--y);z-index:2;display:grid;width:clamp(130px,16vw,168px);min-height:88px;padding:.85rem 1rem;transform:translate(-50%,-50%);border:1px solid var(--dark-border);border-radius:10px;background:var(--navy-800);color:var(--text-light-secondary);text-align:left;cursor:pointer;transition:border-color .2s,background .2s,opacity .2s,box-shadow .2s}.system-node:hover,.system-node:focus-visible{border-color:color-mix(in srgb,var(--blue) 70%,var(--dark-border))}.system-node span{color:var(--text-muted);font-size:.58rem;letter-spacing:.1em}.system-node strong{margin-top:.2rem;color:var(--text-light);font-size:1rem;font-weight:550}.system-node small{margin-top:.1rem;color:var(--text-muted);font-size:.62rem;line-height:1.3}.system-node[data-state=active]{border-width:2px;border-color:var(--blue);background:color-mix(in srgb,var(--navy-800) 88%,var(--blue));box-shadow:0 0 0 1px color-mix(in srgb,var(--blue) 20%,transparent),0 0 30px color-mix(in srgb,var(--blue) 10%,transparent)}.system-node[data-state=active] span{color:var(--warm-accent)}.system-node[data-state=connected]{border-color:color-mix(in srgb,var(--blue) 45%,var(--dark-border));background:color-mix(in srgb,var(--navy-800) 94%,var(--blue))}.system-node[data-state=muted]{opacity:.55}.architecture-panel{padding:clamp(1.5rem,4vw,2.5rem);border-top:1px solid var(--dark-border);background:var(--navy-800)}.panel-label,.panel-group>span{color:var(--blue-hover);font-size:.62rem;font-weight:700;letter-spacing:.12em}.panel-index{margin:1.5rem 0 0;color:var(--warm-accent);font-size:.65rem}.architecture-panel h3{margin:.6rem 0 0;font-size:clamp(2.3rem,5vw,3.6rem);font-weight:500;letter-spacing:-.045em;line-height:.95}.panel-description{margin:1rem 0 0;color:var(--text-light-secondary);font-size:1rem}.panel-group{margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--dark-border)}.panel-group ul{display:flex;flex-wrap:wrap;gap:.45rem;margin:.9rem 0 0;padding:0;list-style:none}.panel-group li{padding:.35rem .55rem;border:1px solid var(--dark-border);border-radius:999px;color:var(--text-light-secondary);font-size:.7rem}
+  :global(.panel-connections li),:global(.panel-examples li){padding:.35rem .55rem;border:1px solid var(--dark-border);border-radius:999px;color:var(--text-light-secondary);font-size:.7rem}
+  @media(min-width:1024px){.architecture-shell{grid-template-columns:minmax(0,2fr) minmax(300px,1fr)}.architecture-panel{border-top:0;border-left:1px solid var(--dark-border)}.diagram-stage{min-height:620px}.system-node{width:clamp(112px,9vw,138px)}}
+  @media(max-width:767px){.diagram-meta{padding:.9rem 1rem}.desktop-instruction{display:none}.mobile-instruction{display:inline}.diagram-stage{min-height:730px;padding:1rem}.diagram-stage svg{display:none}.node-layer{position:relative;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:'marketing marketing' 'website website' 'crm crm' 'automation automation' 'database database' 'ai analytics' 'revenue revenue';gap:18px;inset:auto}.system-node{position:relative;left:auto;top:auto;width:100%;min-width:0;min-height:64px;transform:none}.system-node::after{position:absolute;left:50%;bottom:-19px;width:1px;height:18px;background:color-mix(in srgb,var(--text-light-secondary) 25%,transparent);content:''}.node-ai::after{transform:rotate(-24deg);transform-origin:top}.node-analytics::after{transform:rotate(24deg);transform-origin:top}.node-revenue::after{display:none}.node-marketing{grid-area:marketing}.node-website{grid-area:website}.node-crm{grid-area:crm}.node-automation{grid-area:automation}.node-database{grid-area:database}.node-ai{grid-area:ai}.node-analytics{grid-area:analytics}.node-revenue{grid-area:revenue}.system-node small{font-size:.67rem}.architecture-panel{padding:1.5rem}.architecture-panel h3{font-size:2.4rem}}
+  @media(prefers-reduced-motion:reduce){.architecture-paths path,.system-node{transition:none}.data-particles{display:none}}
+</style>
+<style>.system-node[data-state=muted]{opacity:1;border-color:color-mix(in srgb,var(--dark-border) 75%,transparent)}</style>

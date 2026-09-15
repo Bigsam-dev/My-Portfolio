@@ -1,0 +1,13 @@
+const technology=`{name,"slug":slug.current,category,description,websiteUrl,logo}`;
+const projectCard=`_id,title,"slug":slug.current,client,industry,category,status,year,summary,featured,featuredOrder,order,visibility,role,services,"technologies":technologies[]->${technology},coverImage,seoTitle,seoDescription`;
+export const featuredProjectsQuery=`*[_type=="project"&&visibility in ["card-only","case-study"]&&featured==true]|order(featuredOrder asc)[0...3]{${projectCard}}`;
+export const publicProjectsQuery=`*[_type=="project"&&visibility in ["card-only","case-study"]]|order(order asc,year desc){${projectCard}}`;
+export const caseStudyProjectsQuery=`*[_type=="project"&&visibility=="case-study"]|order(order asc,year desc){${projectCard},problem,businessContext,solution,workflow,implementation[]{order,title,description,image,"technologies":technologies[]->${technology}},outcomes,metrics[]{label,value,context,verified},"testimonial":testimonial->{quote,clientName,role,company,approvedForPublication},screenshots[]{image,altText,caption,title,displayStyle,order}}`;
+export const projectBySlugQuery=`*[_type=="project"&&visibility=="case-study"&&slug.current==$slug][0]{${projectCard},problem,businessContext,solution,workflow,implementation[]{order,title,description,image,"technologies":technologies[]->${technology}},outcomes,metrics[]{label,value,context,verified},"testimonial":testimonial->{quote,clientName,role,company,approvedForPublication},screenshots[]{image,altText,caption,title,displayStyle,order}}`;
+export const nextProjectQuery=`*[_type=="project"&&visibility=="case-study"&&order>$order]|order(order asc)[0]{${projectCard}}`;
+export const publishedInsightsQuery=`*[_type=="insight"&&status=="published"]|order(publishedAt desc){_id,title,"slug":slug.current,summary,category,publishedAt,status,featured,seoTitle,seoDescription,coverImage}`;
+export const featuredInsightsQuery=`*[_type=="insight"&&status=="published"&&featured==true]|order(publishedAt desc)[0...3]{_id,title,"slug":slug.current,summary,category,publishedAt,status,featured,seoTitle,seoDescription,coverImage}`;
+export const insightBySlugQuery=`*[_type=="insight"&&status=="published"&&slug.current==$slug][0]{_id,title,"slug":slug.current,summary,category,publishedAt,status,featured,seoTitle,seoDescription,coverImage,body}`;
+export const technologiesQuery=`*[_type=="technology"]|order(name asc)${technology}`;
+export const approvedTestimonialsQuery=`*[_type=="testimonial"&&approvedForPublication==true]{quote,clientName,role,company,approvedForPublication}`;
+export const siteMediaQuery=`*[_type=="siteMedia"][0]{portrait,workingPhoto,secondaryPhoto,representativeProof[]{image,altText,caption,title,displayStyle,order}}`;

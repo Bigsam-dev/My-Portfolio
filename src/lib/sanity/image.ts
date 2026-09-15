@@ -1,0 +1,5 @@
+import {createImageUrlBuilder,type SanityImageSource} from '@sanity/image-url';import {getSanityClient,isSanityConfigured} from './client';
+export const sanityImageUrl=(source:SanityImageSource|undefined,width=1200)=>source&&isSanityConfigured?createImageUrlBuilder(getSanityClient()).image(source).auto('format').fit('max').width(width).url():undefined;
+export const sanityImageSrcset=(source:SanityImageSource|undefined,widths=[480,768,1200,1600])=>source&&isSanityConfigured?widths.map(width=>`${sanityImageUrl(source,width)} ${width}w`).join(', '):undefined;
+export const sanityCroppedImageUrl=(source:SanityImageSource|undefined,width:number,height:number)=>source&&isSanityConfigured?createImageUrlBuilder(getSanityClient()).image(source).auto('format').fit('crop').width(width).height(height).url():undefined;
+export const sanityCroppedImageSrcset=(source:SanityImageSource|undefined,aspectRatio:number,widths=[480,768,1120])=>source&&isSanityConfigured?widths.map(width=>`${sanityCroppedImageUrl(source,width,Math.round(width/aspectRatio))} ${width}w`).join(', '):undefined;

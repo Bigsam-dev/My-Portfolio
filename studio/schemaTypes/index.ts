@@ -1,0 +1,2 @@
+import project from './project';import technology from './technology';import testimonial from './testimonial';import insight from './insight';import siteMedia from './siteMedia';import projectScreenshot from './projectScreenshot';import implementationItem from './implementationItem';import metric from './metric';import portableText from './portableText';
+export const schemaTypes=[project,technology,testimonial,insight,siteMedia,projectScreenshot,implementationItem,metric,portableText];
