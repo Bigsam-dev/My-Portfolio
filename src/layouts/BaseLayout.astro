@@ -3,8 +3,8 @@ import '../styles/global.css';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
 import { absoluteSiteUrl, siteConfig } from '../config/site';
-interface Props { title?:string; description?:string; image?:string; imageAlt?:string; type?:'website'|'article'; robots?:string; publishedAt?:string; modifiedAt?:string; structuredData?:Record<string,unknown>|Record<string,unknown>[] }
-const {title=siteConfig.defaultTitle,description=siteConfig.defaultDescription,image=siteConfig.defaultSocialImage,imageAlt='SAMDIGITALS — AI Automation, CRM and Web Systems',type='website',robots,publishedAt,modifiedAt,structuredData}=Astro.props;
+interface Props { title?:string; description?:string; image?:string; imageAlt?:string; type?:'website'|'article'; robots?:string; publishedAt?:string; modifiedAt?:string; structuredData?:Record<string,unknown>|Record<string,unknown>[]; headerVariant?:'default'|'floating' }
+const {title=siteConfig.defaultTitle,description=siteConfig.defaultDescription,image=siteConfig.defaultSocialImage,imageAlt='SAMDIGITALS — AI Automation, CRM and Web Systems',type='website',robots,publishedAt,modifiedAt,structuredData,headerVariant='default'}=Astro.props;
 const canonical=absoluteSiteUrl(Astro.url.pathname);
 const socialImage=image.startsWith('http')?image:(absoluteSiteUrl(image)||image);
 const jsonLd=structuredData?JSON.stringify(structuredData).replace(/</g,'\\u003c'):undefined;
@@ -23,7 +23,7 @@ const jsonLd=structuredData?JSON.stringify(structuredData).replace(/</g,'\\u003c
   {socialImage&&<meta name="twitter:image" content={socialImage}/>} {socialImage&&<meta name="twitter:image:alt" content={imageAlt}/>}
   {jsonLd&&<script is:inline type="application/ld+json" set:html={jsonLd}/>}<title>{title}</title>
 </head>
-<body><a class="skip-link" href="#main-content">Skip to content</a><Header/><main id="main-content"><slot/></main><Footer/>
+<body><a class="skip-link" href="#main-content">Skip to content</a><Header variant={headerVariant}/><main id="main-content"><slot/></main><Footer/>
 <script>
 const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 if(!reduceMotion&&'IntersectionObserver'in window){const targets=document.querySelectorAll<HTMLElement>('.section-heading,.project-card,.service-panel,.services-list article,.principles li,.process li,.article-list>a,.insights-index li');const observer=new IntersectionObserver((entries)=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target)}}),{rootMargin:'0px 0px -8% 0px',threshold:.08});targets.forEach((target,index)=>{target.classList.add('reveal-item');target.style.transitionDelay=`${Math.min(index%4,3)*55}ms`;observer.observe(target)})}
