@@ -28,7 +28,8 @@ const services = [
 <BaseLayout title={siteConfig.defaultTitle} description={siteConfig.defaultDescription} structuredData={organizationSchema} headerVariant="floating">
   <section class="hero" aria-labelledby="hero-title">
     <div class="hero-media" aria-hidden="true"><img src="/images/samdigitals-hero.png" alt="" width="1672" height="941" loading="eager" decoding="async" fetchpriority="high"/></div>
-    <Container><div class="hero-grid"><div class="hero-copy"><Eyebrow>AI AUTOMATION / CRM / WEB SYSTEMS</Eyebrow><h1 id="hero-title">I Build the Systems Behind Growing Businesses.</h1><p class="hero-lede">I design and build AI automation, CRM infrastructure, custom web apps, and conversion-focused websites that connect operations, data, and revenue.</p><div class="button-row"><Button href="/work/">View Selected Work</Button><Button href="/contact/" variant="secondary">Start a Project</Button></div><p class="credibility"><span aria-hidden="true"></span>Built for businesses that have outgrown manual processes and disconnected tools.</p><SoftwareMarquee/></div></div></Container>
+    <Container><div class="hero-grid"><div class="hero-copy"><Eyebrow>AI AUTOMATION / CRM / WEB SYSTEMS</Eyebrow><h1 id="hero-title">I Build the Systems Behind Growing Businesses.</h1><p class="hero-lede">I design and build AI automation, CRM infrastructure, custom web apps, and conversion-focused websites that connect operations, data, and revenue.</p><p class="credibility"><span aria-hidden="true"></span>Built for businesses that have outgrown manual processes and disconnected tools.</p><div class="button-row"><Button href="/contact/">Start a Project</Button></div></div></div></Container>
+    <div class="hero-marquee"><SoftwareMarquee/></div>
   </section>
 
   <section id="featured-work" class="section featured-work" aria-labelledby="work-title"><Container><SectionHeading eyebrow="01 / SELECTED WORK" title="Systems built around real business problems." description="A selection of CRM, automation, analytics, website, and operational systems designed to remove friction and make businesses easier to run." id="work-title"/><div class="projects-grid">{projects.map((project,index)=><ProjectCard project={project} featured={index===0}/>)}</div><a class="section-link" href="/work/">View All Work <span aria-hidden="true">→</span></a></Container></section>
@@ -73,4 +74,13 @@ const services = [
   .proof :global(.representative-proof){margin-top:clamp(2.5rem,5vw,4rem)}
   .about-portrait{min-width:0;margin:0;overflow:hidden;border:1px solid var(--dark-border);border-radius:var(--radius-lg);background:var(--navy-900)}
   .about-portrait img{display:block;width:100%;height:auto;object-position:50% 0%}
+</style>
+<style>
+  .hero{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;padding-block:clamp(8.5rem,12vw,11rem) 0}
+  .hero :global(.container){padding-bottom:clamp(3rem,6vw,5rem)}
+  .hero-marquee{position:relative;z-index:2;width:100%;min-width:0;padding-bottom:1.25rem}
+  .hero h1{font-weight:550}
+  .hero .credibility{margin:2rem 0 0}
+  .hero .button-row{margin-top:1.35rem}
+  @media(max-width:767px){.hero{padding-block:7.5rem 0}.hero :global(.container){padding-bottom:3rem}.hero .credibility{margin-top:2rem}}
 </style>

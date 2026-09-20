@@ -27,15 +27,15 @@ const platforms = [
 </div>
 
 <style>
-.software-marquee{min-width:0;margin-top:clamp(2rem,4vw,3rem);padding-top:1rem;border-top:1px solid var(--dark-border)}
-.software-marquee>p{margin:0 0 .75rem;color:var(--text-light-secondary);font-size:.72rem;font-weight:650;letter-spacing:.08em;text-transform:uppercase}
+.software-marquee{width:100%;min-width:0;padding-top:1rem;border-top:1px solid var(--dark-border)}
+.software-marquee>p{margin:0 0 .75rem;padding-inline:clamp(1.25rem,4vw,4rem);color:var(--text-light-secondary);font-size:.72rem;font-weight:650;letter-spacing:.08em;text-transform:uppercase}
 .marquee-window{width:100%;min-width:0;overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
 .marquee-track{display:flex;width:max-content;will-change:transform;animation:logo-marquee 40s linear infinite}
 .logo-set{display:flex;flex:0 0 auto;align-items:center;gap:clamp(1.75rem,3vw,3rem);margin:0;padding:0 clamp(1.75rem,3vw,3rem) 0 0;list-style:none}
 .logo-set li{display:flex;flex:0 0 auto;height:30px;align-items:center;gap:.45rem;opacity:.72;transition:opacity .2s,filter .2s}.logo-set li span{color:var(--text-light);font-size:1rem;font-weight:700;letter-spacing:-.03em}
 .logo-set img{display:block;width:auto;max-width:142px;height:clamp(22px,2vw,28px)}
 .logo-set img{filter:brightness(0) invert(1)}
-.capabilities{display:block;margin-top:.7rem;color:var(--text-muted);font-size:.65rem;letter-spacing:.05em}
+.capabilities{display:block;margin-top:.7rem;padding-inline:clamp(1.25rem,4vw,4rem);color:var(--text-muted);font-size:.65rem;letter-spacing:.05em}
 @keyframes logo-marquee{to{transform:translateX(-50%)}}
 @media(hover:hover) and (pointer:fine){.marquee-window:hover .marquee-track{animation-play-state:paused}.logo-set li:hover{opacity:1;filter:drop-shadow(0 0 8px color-mix(in srgb,var(--blue-hover) 25%,transparent))}}
 @media(max-width:480px){.marquee-track{animation-duration:35s}.logo-set{gap:1.4rem;padding-right:1.4rem}.logo-set img{height:22px;max-width:124px}.capabilities{line-height:1.5}}
